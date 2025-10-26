@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}New Template{% endblock %}
+
+{% block content %}
+<h1>Create New Template</h1>
+<form method="POST">
+    <label for="name">Template Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="html_content">HTML Content:</label>
+    <textarea id="html_content" name="html_content" rows="20" required>
+<html>
+<body>
+<h1>Important Security Update</h1>
+<p>Click here to update your password: <a href="{{ track_url }}">Update Password</a></p>
+</body>
+</html>
+    </textarea><br>
+
+    <button type="submit">Create Template</button>
+</form>
+{% endblock %}

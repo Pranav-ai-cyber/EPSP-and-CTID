@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Corporate Phishing Awareness Platform{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛡️%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🛡️ Corporate Security Training Hub</h1>
+            <p>Building a Safer Workplace Through Cybersecurity Education</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.dashboard') }}" title="View Dashboard"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                <li><a href="{{ url_for('campaigns.list_campaigns') }}" title="Manage Campaigns"><i class="fas fa-bullhorn"></i>Training Programs</a></li>
+                <li><a href="{{ url_for('templates.list_templates') }}" title="Email Templates"><i class="fas fa-envelope"></i>Email Templates</a></li>
+                <li><a href="{{ url_for('analytics.dashboard') }}" title="View Reports"><i class="fas fa-chart-bar"></i>Reports & Analytics</a></li>
+                <li><a href="{{ url_for('main.education') }}" title="Learning Resources"><i class="fas fa-graduation-cap"></i>Learning Center</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p><i class="fas fa-shield-alt"></i> &copy; 2025 Corporate Phishing Awareness Platform. Building a safer digital workplace.</p>
+    </footer>
+</body>
+</html>

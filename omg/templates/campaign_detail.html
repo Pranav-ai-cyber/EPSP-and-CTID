@@ -1,0 +1,9 @@
+<h1>{{ campaign.name }}</h1>
+<p>{{ campaign.description }}</p>
+<h2>Emails Sent</h2>
+<ul>
+    {% for email in campaign.emails %}
+    <li>{{ email.user.email }} - Sent: {{ email.sent_at }} - Opened: {{ email.opened }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

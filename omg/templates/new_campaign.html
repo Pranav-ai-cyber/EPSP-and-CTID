@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}New Campaign{% endblock %}
+
+{% block content %}
+<h1>Create New Campaign</h1>
+<form method="POST">
+    <label for="name">Campaign Name:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"></textarea><br>
+
+    <label for="template_id">Template:</label>
+    <select id="template_id" name="template_id" required>
+        {% for template in templates %}
+        <option value="{{ template.id }}">{{ template.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <label for="user_emails">User Emails (one per line):</label>
+    <textarea id="user_emails" name="user_emails" required></textarea><br>
+
+    <button type="submit">Create Campaign</button>
+</form>
+{% endblock %}

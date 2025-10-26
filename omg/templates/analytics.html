@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<h1>Campaign Analytics</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Campaign</th>
+            <th>Total Emails</th>
+            <th>Opened</th>
+            <th>Clicks</th>
+            <th>Open Rate (%)</th>
+            <th>Success Rate (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for analytic in analytics %}
+        <tr>
+            <td>{{ analytic.campaign.name }}</td>
+            <td>{{ analytic.total_emails }}</td>
+            <td>{{ analytic.opened_emails }}</td>
+            <td>{{ analytic.total_clicks }}</td>
+            <td>{{ "%.2f"|format(analytic.open_rate) }}</td>
+            <td>{{ "%.2f"|format(analytic.success_rate) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Template{% endblock %}
+
+{% block content %}
+<h1>Edit Template</h1>
+<form method="POST">
+    <label for="name">Template Name:</label>
+    <input type="text" id="name" name="name" value="{{ template.name }}" required><br>
+
+    <label for="html_content">HTML Content:</label>
+    <textarea id="html_content" name="html_content" rows="20" required>{{ template.html_content }}</textarea><br>
+
+    <button type="submit">Update Template</button>
+</form>
+{% endblock %}

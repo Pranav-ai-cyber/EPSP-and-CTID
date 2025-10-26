@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Center{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>Learning Center</h1>
+    </div>
+    <p>Welcome to our comprehensive cybersecurity education hub. Here you'll find interactive quizzes, best practices, and resources to help you stay safe online.</p>
+</div>
+
+<div class="card">
+    <h2>What is Phishing?</h2>
+    <p>Phishing is a cyber attack where attackers try to trick you into giving sensitive information or performing actions that compromise security. Common types include:</p>
+    <ul>
+        <li><strong>Email Phishing:</strong> Fake emails pretending to be from trusted sources</li>
+        <li><strong>Spear Phishing:</strong> Targeted attacks using personal information</li>
+        <li><strong>Whaling:</strong> Attacks targeting high-level executives</li>
+        <li><strong>Smishing/Vishing:</strong> Phishing via SMS or phone calls</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>🚩 Red Flags to Watch For</h2>
+    <div class="alert alert-info">
+        <h3>Email Indicators:</h3>
+        <ul>
+            <li>Unexpected emails asking for personal information</li>
+            <li>Urgent language creating panic ("Your account will be suspended!")</li>
+            <li>Sender email doesn't match the claimed organization</li>
+            <li>Generic greetings like "Dear User" instead of your name</li>
+            <li>Suspicious links or attachments</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🛡️ Best Practices</h2>
+    <div class="alert alert-success">
+        <h3>Prevention Strategies:</h3>
+        <ul>
+            <li><strong>Verify Before Click:</strong> Hover over links to check the real URL</li>
+            <li><strong>Enable 2FA:</strong> Use two-factor authentication whenever possible</li>
+            <li><strong>Report Suspicious Activity:</strong> Contact IT security immediately</li>
+            <li><strong>Use Strong Passwords:</strong> Unique passwords for each account</li>
+            <li><strong>Keep Software Updated:</strong> Regular security patches</li>
+            <li><strong>Be Skeptical:</strong> If it seems too good to be true, it probably is</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📚 Additional Resources</h2>
+    <p>Continue your cybersecurity education:</p>
+    <ul>
+        <li><a href="#" target="_blank">NIST Cybersecurity Framework</a></li>
+        <li><a href="#" target="_blank">CISA Phishing Resources</a></li>
+        <li><a href="#" target="_blank">KnowBe4 Security Awareness Training</a></li>
+        <li><a href="#" target="_blank">Your Organization's IT Security Policy</a></li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>🎯 Quiz: Test Your Knowledge</h2>
+    <p>Take this quick quiz to reinforce what you've learned:</p>
+    <form id="phishing-quiz">
+        <div class="quiz-question">
+            <p><strong>1. What should you do if you receive an email asking for your password?</strong></p>
+            <label><input type="radio" name="q1" value="a"> Reply with your password</label><br>
+            <label><input type="radio" name="q1" value="b"> Contact IT support directly</label><br>
+            <label><input type="radio" name="q1" value="c"> Click the link to reset your password</label>
+        </div>
+
+        <div class="quiz-question">
+            <p><strong>2. Which of these is a common phishing tactic?</strong></p>
+            <label><input type="radio" name="q2" value="a"> Creating urgency</label><br>
+            <label><input type="radio" name="q2" value="b"> Using proper grammar</label><br>
+            <label><input type="radio" name="q2" value="c"> Sending from verified domains</label>
+        </div>
+
+        <button type="button" onclick="checkQuiz()" class="btn">Submit Quiz</button>
+    </form>
+    <div id="quiz-result" style="display: none; margin-top: 1rem;"></div>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+
+<script>
+function checkQuiz() {
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    const result = document.getElementById('quiz-result');
+
+    if (!q1 || !q2) {
+        result.innerHTML = '<div class="alert alert-info">Please answer all questions.</div>';
+        result.style.display = 'block';
+        return;
+    }
+
+    let score = 0;
+    if (q1.value === 'b') score++;
+    if (q2.value === 'a') score++;
+
+    if (score === 2) {
+        result.innerHTML = '<div class="alert alert-success">Excellent! You\'re well-prepared against phishing attacks.</div>';
+    } else if (score === 1) {
+        result.innerHTML = '<div class="alert alert-info">Good job! Review the material above and try again.</div>';
+    } else {
+        result.innerHTML = '<div class="alert alert-info">Please review the best practices above and retake the quiz.</div>';
+    }
+
+    result.style.display = 'block';
+}
+</script>
+{% endblock %}

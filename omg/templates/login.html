@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Phishing Simulation Platform{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ 'success' if category == 'success' else 'info' if category == 'info' else 'warning' if category == 'warning' else 'danger' if category == 'danger' else 'info' }}">
+    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'info-circle' if category == 'info' else 'exclamation-triangle' if category == 'warning' else 'times-circle' if category == 'danger' else 'info-circle' }}"></i>
+    <div>{{ message }}</div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="card" style="max-width: 500px; margin: 2rem auto;">
+    <div class="card-header">
+        <i class="fas fa-sign-in-alt"></i>
+        <h1>Employee Login</h1>
+    </div>
+
+    <form method="POST" style="padding: 1.5rem;">
+        <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+            <input type="email" id="email" name="email" placeholder="your.email@company.com">
+        </div>
+
+        <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" name="password" placeholder="Your password">
+        </div>
+
+        <div style="text-align: center; margin: 1rem 0; color: var(--text-secondary);">
+            <strong>OR</strong>
+        </div>
+
+        <div class="form-group">
+            <label for="login_key"><i class="fas fa-key"></i> Login Key</label>
+            <input type="text" id="login_key" name="login_key"
+                   placeholder="Your unique login key">
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+    </form>
+
+    <div style="text-align: center; padding: 1rem; border-top: 1px solid var(--border-color);">
+        <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+    </div>
+</div>
+
+<div class="alert alert-info" style="max-width: 500px; margin: 1rem auto;">
+    <i class="fas fa-info-circle"></i>
+    <div>
+        <strong>Login Options:</strong> You can login using either your email and password, or your unique login key provided during registration.
+    </div>
+</div>
+{% endblock %}
