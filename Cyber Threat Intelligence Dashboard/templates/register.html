@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureShield - Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #0f172a;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color), #7c3aed);
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .register-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-floating > label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            border: 2px solid rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.15);
+            background: white;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-register::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-register:hover::before {
+            left: 100%;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .divider::before {
+            margin-right: 1rem;
+        }
+
+        .divider::after {
+            margin-left: 1rem;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .login-link a {
+            color: var(--success-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            color: var(--success-color);
+        }
+
+        /* Security-themed animations */
+        .security-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 3s ease-in-out 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .security-content {
+            text-align: center;
+            color: white;
+        }
+
+        .security-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.5);
+            animation: securityPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes securityPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(16, 185, 129, 0.5);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 80px rgba(16, 185, 129, 0.8);
+            }
+        }
+
+        .security-logo i {
+            font-size: 3rem;
+        }
+
+        .security-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: textGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+            to { text-shadow: 0 0 20px rgba(16, 185, 129, 1); }
+        }
+
+        .security-progress {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+            border-radius: 2px;
+            animation: progressFill 2s ease-in-out;
+        }
+
+        @keyframes progressFill {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .security-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.5; }
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .strength-weak { color: var(--danger-color); }
+        .strength-medium { color: var(--warning-color); }
+        .strength-strong { color: var(--success-color); }
+
+        @media (max-width: 480px) {
+            .register-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+
+            .register-title {
+                font-size: 1.5rem;
+            }
+
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logo i {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Security Animation -->
+    <div class="security-animation" id="securityAnimation">
+        <div class="security-content">
+            <div class="security-logo">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="security-text">Setting Up Account Security</div>
+            <div class="security-progress">
+                <div class="progress-bar"></div>
+            </div>
+            <div class="security-status">Initializing secure registration...</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="register-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 class="register-title">Join SecureShield</h2>
+                <p class="register-subtitle">Create your account to start protecting your digital world</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-success" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ messages[0] }}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" id="registerForm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                    <label for="username">
+                        <i class="fas fa-user me-2"></i>Username
+                    </label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                    <label for="email">
+                        <i class="fas fa-envelope me-2"></i>Email Address
+                    </label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="password">
+                        <i class="fas fa-lock me-2"></i>Password
+                    </label>
+                    <div id="passwordStrength" class="password-strength"></div>
+                </div>
+
+                <button type="submit" class="btn btn-register" id="registerBtn">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <div class="divider">or</div>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Remove security animation after 3 seconds
+        setTimeout(() => {
+            const animation = document.getElementById('securityAnimation');
+            animation.style.display = 'none';
+        }, 3000);
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthIndicator = document.getElementById('passwordStrength');
+            let strength = 0;
+            let feedback = [];
+
+            if (password.length >= 8) strength++;
+            else feedback.push('At least 8 characters');
+
+            if (/[a-z]/.test(password)) strength++;
+            else feedback.push('Lowercase letter');
+
+            if (/[A-Z]/.test(password)) strength++;
+            else feedback.push('Uppercase letter');
+
+            if (/[0-9]/.test(password)) strength++;
+            else feedback.push('Number');
+
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else feedback.push('Special character');
+
+            if (strength <= 2) {
+                strengthIndicator.innerHTML = '<span class="strength-weak">Weak password</span>';
+            } else if (strength <= 4) {
+                strengthIndicator.innerHTML = '<span class="strength-medium">Medium strength</span>';
+            } else {
+                strengthIndicator.innerHTML = '<span class="strength-strong">Strong password</span>';
+            }
+        });
+
+        // Form validation and enhancement
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const btn = document.getElementById('registerBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            btn.disabled = true;
+
+            // Re-enable after 3 seconds if no redirect
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 3000);
+        });
+
+        // Input focus effects
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

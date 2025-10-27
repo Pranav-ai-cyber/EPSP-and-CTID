@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable Page</title>
+</head>
+<body>
+    <h1>Welcome to our site</h1>
+    <form action="/search" method="GET">
+        <input type="text" name="query" value="<script>alert('XSS Attack!')</script>">
+        <button type="submit">Search</button>
+    </form>
+    <p>Search results for: <script>alert('XSS Attack!')</script></p>
+</body>
+</html>

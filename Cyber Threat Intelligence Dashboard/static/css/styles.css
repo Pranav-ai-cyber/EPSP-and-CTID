@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+}
+
+#threats-container {
+    margin-top: 20px;
+}
+
+.threat {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.threat-type {
+    font-weight: bold;
+    color: #d9534f;
+}
+
+.threat-value {
+    color: #333;
+}
+
+.threat-source {
+    font-style: italic;
+    color: #777;
+}

@@ -1,0 +1,12 @@
+Subject: Urgent: Your Account Has Been Suspended!
+
+Dear User,
+
+We have detected unusual activity on your account. To avoid permanent suspension, please click the link below to verify your identity immediately.
+
+Click here to secure your account: http://fake-bank.com/verify?user=yourname
+
+If you do not act within 24 hours, your account will be locked.
+
+Best regards,
+Bank Security Team

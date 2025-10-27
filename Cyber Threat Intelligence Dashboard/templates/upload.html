@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureShield - File & URL Scanner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #0f172a;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #ffffff !important;
+        }
+
+        .navbar-brand i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
+
+        .upload-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .upload-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .upload-tabs {
+            border: none;
+            margin-bottom: 2rem;
+        }
+
+        .upload-tabs .nav-link {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 12px 12px 0 0;
+            margin-right: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .upload-tabs .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .upload-tabs .nav-link:hover {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 0 12px 12px 12px;
+            padding: 2rem;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .file-upload-area {
+            border: 2px dashed rgba(37, 99, 235, 0.3);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .upload-subtext {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .url-input-group {
+            position: relative;
+        }
+
+        .url-input {
+            border: 2px solid rgba(37, 99, 235, 0.2);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .url-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+            background: white;
+        }
+
+        .url-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-scan {
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-scan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-scan:hover::before {
+            left: 100%;
+        }
+
+        .btn-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-scan:active {
+            transform: translateY(0);
+        }
+
+        .btn-scan:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .file-list {
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .file-icon {
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .file-remove {
+            color: var(--danger-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .file-remove:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--primary-color);
+        }
+
+        .scanning-animation {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .scan-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(37, 99, 235, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .scan-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .scan-subtext {
+            color: var(--text-secondary);
+        }
+
+        .features-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(37, 99, 235, 0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .upload-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .hero-section,
+            .upload-section,
+            .features-section {
+                padding: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-shield-alt"></i>SecureShield
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('upload') }}">
+                            <i class="fas fa-upload me-1"></i>Scan Files
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="upload-container">
+        <div class="hero-section">
+            <h1 class="hero-title">
+                <i class="fas fa-search me-3"></i>Advanced Security Scanner
+            </h1>
+            <p class="hero-subtitle">
+                Upload files or scan URLs for comprehensive threat detection using multiple security engines and AI-powered analysis.
+            </p>
+        </div>
+
+        <div class="upload-section">
+            <ul class="nav nav-tabs upload-tabs" id="uploadTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="file-tab" data-bs-toggle="tab" data-bs-target="#file-upload" type="button" role="tab" aria-controls="file-upload" aria-selected="true">
+                        <i class="fas fa-file-upload me-2"></i>File Upload
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="url-tab" data-bs-toggle="tab" data-bs-target="#url-scan" type="button" role="tab" aria-controls="url-scan" aria-selected="false">
+                        <i class="fas fa-link me-2"></i>URL Scan
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="uploadTabsContent">
+                <div class="tab-pane fade show active" id="file-upload" role="tabpanel" aria-labelledby="file-tab">
+                    <form method="POST" enctype="multipart/form-data" id="fileForm">
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Drop files here or click to browse</div>
+                            <div class="upload-subtext">Supports: Python, HTML, TXT, EXE files (max 10MB each)</div>
+                            <input type="file" class="file-input" id="file" name="file" multiple accept=".py,.html,.txt,.exe">
+                        </div>
+                        <div id="fileList" class="file-list"></div>
+                        <button type="submit" class="btn btn-scan" id="fileScanBtn">
+                            <i class="fas fa-shield-alt me-2"></i>Scan Files for Threats
+                        </button>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="url-scan" role="tabpanel" aria-labelledby="url-tab">
+                    <form method="POST" id="urlForm">
+                        <div class="url-input-group">
+                            <input type="url" class="url-input" id="url" name="url" placeholder="Enter URL to scan (e.g., https://example.com)" required>
+                        </div>
+                        <button type="submit" class="btn btn-scan" id="urlScanBtn">
+                            <i class="fas fa-search me-2"></i>Scan URL for Threats
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="scanning-animation" id="scanningAnimation">
+            <div class="scan-spinner"></div>
+            <div class="scan-text">Scanning for Threats...</div>
+            <div class="scan-subtext">This may take a few moments</div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle me-2"></i>{{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="features-section">
+            <h2 class="features-title">Advanced Scanning Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="feature-title">AI-Powered Analysis</div>
+                    <div class="feature-description">
+                        Machine learning algorithms detect sophisticated threats and zero-day vulnerabilities.
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="feature-title">Multi-Source Intelligence</div>
+                    <div class="feature-description">
+                        Cross-references threats against VirusTotal, AlienVault, Shodan, and AbuseIPDB databases.
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="feature-title">Code Analysis</div>
+                    <div class="feature-description">
+                        Deep static analysis of source code for SQL injection, XSS, and other vulnerabilities.
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="feature-title">URL Reputation</div>
+                    <div class="feature-description">
+                        Real-time URL scanning and reputation checking against global threat intelligence.
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-title">Automated Blocking</div>
+                    <div class="feature-description">
+                        Automatically blocks detected threats and sends real-time alerts to administrators.
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-title">Comprehensive Reporting</div>
+                    <div class="feature-description">
+                        Generate detailed CSV and PDF reports with threat intelligence and mitigation steps.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // File upload handling
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('file');
+        const fileList = document.getElementById('fileList');
+        const fileForm = document.getElementById('fileForm');
+        const urlForm = document.getElementById('urlForm');
+        const scanningAnimation = document.getElementById('scanningAnimation');
+
+        let selectedFiles = [];
+
+        // Drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            fileUploadArea.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            fileUploadArea.classList.remove('dragover');
+        }
+
+        fileUploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        fileInput.addEventListener('change', function(e) {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            [...files].forEach(file => {
+                if (validateFile(file)) {
+                    selectedFiles.push(file);
+                    displayFile(file);
+                }
+            });
+        }
+
+        function validateFile(file) {
+            const allowedTypes = ['text/x-python', 'text/html', 'text/plain', 'application/x-msdownload'];
+            const allowedExtensions = ['.py', '.html', '.txt', '.exe'];
+            const maxSize = 10 * 1024 * 1024; // 10MB
+
+            const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+
+            if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
+                alert(`File type not supported: ${file.name}. Please upload Python, HTML, TXT, or EXE files.`);
+                return false;
+            }
+
+            if (file.size > maxSize) {
+                alert(`File too large: ${file.name}. Maximum size is 10MB.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function displayFile(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">
+                        <i class="fas ${getFileIcon(file.name)}"></i>
+                    </div>
+                    <div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                </div>
+                <div class="file-remove" onclick="removeFile('${file.name}')">
+                    <i class="fas fa-times"></i>
+                </div>
+            `;
+            fileList.appendChild(fileItem);
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            switch (ext) {
+                case 'py': return 'fa-file-code';
+                case 'html': return 'fa-file-code';
+                case 'txt': return 'fa-file-alt';
+                case 'exe': return 'fa-cogs';
+                default: return 'fa-file';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(fileName) {
+            selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+            updateFileList();
+        }
+
+        function updateFileList() {
+            fileList.innerHTML = '';
+            selectedFiles.forEach(displayFile);
+        }
+
+        // Form submission handling
+        fileForm.addEventListener('submit', function(e) {
+            if (selectedFiles.length === 0) {
+                e.preventDefault();
+                alert('Please select at least one file to scan.');
+                return;
+            }
+
+            const btn = document.getElementById('fileScanBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scanning...';
+            btn.disabled = true;
+            scanningAnimation.style.display = 'block';
+
+            // Re-enable after 10 seconds if no redirect
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                scanningAnimation.style.display = 'none';
+            }, 10000);
+        });
+
+        urlForm.addEventListener('submit', function(e) {
+            const urlInput = document.getElementById('url');
+            if (!urlInput.value) {
+                e.preventDefault();
+                alert('Please enter a URL to scan.');
+                return;
+            }
+
+            const btn = document.getElementById('urlScanBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scanning...';
+            btn.disabled = true;
+            scanningAnimation.style.display = 'block';
+
+            // Re-enable after 10 seconds if no redirect
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                scanningAnimation.style.display = 'none';
+            }, 10000);
+        });
+
+        // Click to upload
+        fileUploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+    </script>
+</body>
+</html>
